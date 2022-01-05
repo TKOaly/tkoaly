@@ -1,5 +1,5 @@
 node_modules
-.keystone/admin
+cms/.keystone/admin
 keystone.db
 *.log
 .cache
