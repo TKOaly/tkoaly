@@ -1,7 +1,0 @@
--- AlterTable
-ALTER TABLE "Company" ADD COLUMN     "sponsored" BOOLEAN NOT NULL DEFAULT false,
-ADD COLUMN     "website" TEXT NOT NULL DEFAULT E'';
-
--- AlterTable
-ALTER TABLE "Job" ADD COLUMN     "url" TEXT NOT NULL DEFAULT E'',
-ALTER COLUMN "startDate" DROP DEFAULT;
