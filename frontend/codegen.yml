@@ -1,0 +1,11 @@
+schema: http://localhost:3001/api/graphql
+documents: ./**/*.graphql
+generates:
+  ./app/api/cms.sdk.ts:
+    config:
+      avoidOptionals: true
+      maybeValue: T
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request

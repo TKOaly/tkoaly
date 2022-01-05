@@ -6,3 +6,4 @@ keystone.db
 build
 public/build
 .env
+.keystone

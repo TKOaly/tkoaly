@@ -1,0 +1,19 @@
+query GetJobs {
+  jobs(limit: 10) {
+    id
+    title
+    url
+    content {
+      document
+    }
+    startDate
+    endDate
+    company {
+      name
+      website
+    }
+    tags {
+      name
+    }
+  }
+}

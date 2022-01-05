@@ -1,0 +1,18 @@
+query GetJob($jobId: ID!) {
+  job(where: { id: $jobId }) {
+    title
+    url
+    content {
+      document
+    }
+    startDate
+    endDate
+    company {
+      name
+      website
+    }
+    tags {
+      name
+    }
+  }
+}
