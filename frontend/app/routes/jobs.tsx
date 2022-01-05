@@ -16,19 +16,28 @@ export default function Index() {
   const data = useLoaderData<GetJobsQuery>();
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
+    <main>
       <h1>TKO-aly</h1>
-      <main>
-        <Outlet />
-      </main>
+      <div className="job-container">
+      <section className="job-list">
+        <ul className="card-container">
+          {data.jobs.map((job) => (
+            <li className="card">
+              <Link to={job.id}>
+                <div className="content">
+                  <b className="title">{job.title}</b>
+                  <span className="company">{job.company?.name ?? ""}</span>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-      <ul>
-        {data.jobs.map((job) => (
-          <li>
-            <Link to={job.id}>{job.title}</Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+      <section className="job-description">
+        <Outlet />
+      </section>
+      </div>
+    </main>
   );
 }

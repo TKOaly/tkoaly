@@ -893,12 +893,12 @@ export type GetJobQueryVariables = Exact<{
 }>;
 
 
-export type GetJobQuery = { __typename?: 'Query', job: { __typename?: 'Job', title: string, url: string, startDate: any, endDate: any, content: { __typename?: 'Job_content_Document', document: any }, company: { __typename?: 'Company', name: string, website: string }, tags: Array<{ __typename?: 'Tag', name: string }> } };
+export type GetJobQuery = { __typename?: 'Query', job: { __typename?: 'Job', title: string, url: string, startDate: any, endDate: any, content: { __typename?: 'Job_content_Document', document: any }, company: { __typename?: 'Company', id: string, name: string, website: string }, tags: Array<{ __typename?: 'Tag', name: string }> } };
 
 export type GetJobsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetJobsQuery = { __typename?: 'Query', jobs: Array<{ __typename?: 'Job', id: string, title: string, url: string, startDate: any, endDate: any, content: { __typename?: 'Job_content_Document', document: any }, company: { __typename?: 'Company', name: string, website: string }, tags: Array<{ __typename?: 'Tag', name: string }> }> };
+export type GetJobsQuery = { __typename?: 'Query', jobs: Array<{ __typename?: 'Job', id: string, title: string, url: string, startDate: any, endDate: any, content: { __typename?: 'Job_content_Document', document: any }, company: { __typename?: 'Company', id: string, name: string, website: string }, tags: Array<{ __typename?: 'Tag', id: string, name: string }> }> };
 
 
 export const GetJobDocument = gql`
@@ -912,6 +912,7 @@ export const GetJobDocument = gql`
     startDate
     endDate
     company {
+      id
       name
       website
     }
@@ -923,7 +924,7 @@ export const GetJobDocument = gql`
     `;
 export const GetJobsDocument = gql`
     query GetJobs {
-  jobs {
+  jobs(orderBy: {startDate: desc}) {
     id
     title
     url
@@ -933,10 +934,12 @@ export const GetJobsDocument = gql`
     startDate
     endDate
     company {
+      id
       name
       website
     }
     tags {
+      id
       name
     }
   }

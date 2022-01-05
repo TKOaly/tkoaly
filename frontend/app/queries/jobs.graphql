@@ -1,5 +1,5 @@
 query GetJobs {
-  jobs(limit: 10) {
+  jobs(orderBy: { startDate: desc}) {
     id
     title
     url
@@ -9,10 +9,12 @@ query GetJobs {
     startDate
     endDate
     company {
+      id
       name
       website
     }
     tags {
+      id
       name
     }
   }

@@ -5,7 +5,6 @@ import mainStyles from "~/styles/main.css";
 import { DocumentRenderer } from "@keystone-6/document-renderer";
 
 export const loader = async ({ params }: any): Promise<GetJobQuery> => {
-  console.log('params: ', params);
   const job = await sdk().GetJob({
     jobId: params.id,
   });
@@ -18,10 +17,13 @@ export const links = () => {
 
 export default function Index() {
   const data = useLoaderData<GetJobQuery>();
-  console.log(data);
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
+    <div>
+      <header>
+        <h2>{data.job.title}</h2>
+        {data.job.company && <span>{data.job.company?.name}</span>}
+      </header>
       <DocumentRenderer document={data.job.content.document} />
     </div>
   );

@@ -8,6 +8,7 @@ query GetJob($jobId: ID!) {
     startDate
     endDate
     company {
+      id
       name
       website
     }

@@ -93,8 +93,6 @@ export async function insertSeedData(context: KeystoneContext) {
       const res = await context.query.Job.createOne({
         data: creatableJob,
       });
-
-      console.log("res: ", res);
     }
   };
 
