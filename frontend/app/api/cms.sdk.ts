@@ -882,7 +882,9 @@ export type GetJobQueryVariables = Exact<{
 
 export type GetJobQuery = { __typename?: 'Query', job: { __typename?: 'Job', title: string, url: string, startDate: any, endDate: any, html: string, content: { __typename?: 'Job_content_Document', document: any }, company: { __typename?: 'Company', id: string, name: string, website: string }, tags: Array<{ __typename?: 'Tag', name: string }> } };
 
-export type GetJobsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetJobsQueryVariables = Exact<{
+  endDate: InputMaybe<Scalars['DateTime']>;
+}>;
 
 
 export type GetJobsQuery = { __typename?: 'Query', jobs: Array<{ __typename?: 'Job', id: string, title: string, url: string, startDate: any, endDate: any, content: { __typename?: 'Job_content_Document', document: any }, company: { __typename?: 'Company', id: string, name: string, website: string }, tags: Array<{ __typename?: 'Tag', id: string, name: string }> }> };
@@ -911,8 +913,8 @@ export const GetJobDocument = gql`
 }
     `;
 export const GetJobsDocument = gql`
-    query GetJobs {
-  jobs(orderBy: {startDate: desc}) {
+    query GetJobs($endDate: DateTime) {
+  jobs(orderBy: {startDate: desc}, where: {endDate: {gt: $endDate}}) {
     id
     title
     url

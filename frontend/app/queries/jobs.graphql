@@ -1,5 +1,5 @@
-query GetJobs {
-  jobs(orderBy: { startDate: desc}) {
+query GetJobs($endDate: DateTime) {
+  jobs(orderBy: { startDate: desc }, where: { endDate: { gt: $endDate } }) {
     id
     title
     url

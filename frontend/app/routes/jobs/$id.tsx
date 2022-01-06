@@ -33,7 +33,7 @@ export default function Index() {
       )}
       {data.job.endDate && (
         <div className="mt-4">
-          <span>Apply before:</span>{" "}
+          <span>Application deadline:</span>{" "}
           {dayjs(data.job.endDate).format("DD.MM.YYYY")}
         </div>
       )}
