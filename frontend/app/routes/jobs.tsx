@@ -1,32 +1,38 @@
 import { Link, Outlet, useLoaderData } from "remix";
 import { sdk } from "~/api";
 import { GetJobsQuery } from "~/api/cms.sdk";
-import mainStyles from "~/styles/main.css";
+
+let data;
 
 export const loader = async (): Promise<GetJobsQuery> => {
   const jobs = await sdk().GetJobs();
   return jobs;
 };
 
-export const links = () => {
-  return [{ rel: "stylesheet", href: mainStyles }];
-};
-
 export default function Index() {
   const data = useLoaderData<GetJobsQuery>();
 
   return (
-    <main>
-      <h1>TKO-aly</h1>
-      <div className="job-container">
+    <main className="flex gap-6 mt-6 place-content-center">
       <section className="job-list">
-        <ul className="card-container">
+        <ul className="flex flex-col gap-2">
           {data.jobs.map((job) => (
-            <li className="card">
+            <li>
               <Link to={job.id}>
-                <div className="content">
-                  <b className="title">{job.title}</b>
-                  <span className="company">{job.company?.name ?? ""}</span>
+                <div className="w-96 container bg-white rounded-md shadow-lg transform transition duration-300 hover:shadow-2xl p-2">
+                  <h1 className="text-1xl mt-2 ml-4 font-bold text-gray-800 cursor-pointer hover:text-gray-900 transition duration-100">
+                    {job.title}
+                  </h1>
+                  <span className="ml-4 mt-1 mb-2 text-gray-700 hover:underline cursor-pointer">
+                    {job.company?.name ?? ""}
+                  </span>
+                  <div className="flex gap-2 ml-4">
+                    {job.tags.map((tag) => (
+                      <span className="text-white text-xs font-bold rounded-lg bg-green-500 inline-block py-1.5 px-4 cursor-pointer">
+                        {tag.name}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </Link>
             </li>
@@ -34,10 +40,9 @@ export default function Index() {
         </ul>
       </section>
 
-      <section className="job-description">
+      <section className="bg-white rounded-md shadow-lg p-4 w-[60rem]">
         <Outlet />
       </section>
-      </div>
     </main>
   );
 }

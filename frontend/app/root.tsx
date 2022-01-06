@@ -4,12 +4,17 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration
+  ScrollRestoration,
 } from "remix";
 import type { MetaFunction } from "remix";
+import styles from "./tailwind.css";
+
+export function links() {
+  return [{ rel: "stylesheet", href: styles }];
+}
 
 export const meta: MetaFunction = () => {
-  return { title: "New Remix App" };
+  return { title: "TKO-äly" };
 };
 
 export default function App() {
@@ -22,6 +27,9 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <nav className="flex justify-between items-center h-12 p-3 bg-slate-900 text-white">
+          <h1>TKO-äly</h1>
+        </nav>
         <Outlet />
         <ScrollRestoration />
         <Scripts />
