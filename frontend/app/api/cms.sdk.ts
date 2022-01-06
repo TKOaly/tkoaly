@@ -880,7 +880,7 @@ export type GetJobQueryVariables = Exact<{
 }>;
 
 
-export type GetJobQuery = { __typename?: 'Query', job: { __typename?: 'Job', title: string, url: string, startDate: any, endDate: any, html: string, content: { __typename?: 'Job_content_Document', document: any }, company: { __typename?: 'Company', id: string, name: string, website: string }, tags: Array<{ __typename?: 'Tag', name: string }> } };
+export type GetJobQuery = { __typename?: 'Query', job: { __typename?: 'Job', title: string, url: string, startDate: any, endDate: any, html: string, content: { __typename?: 'Job_content_Document', document: any }, company: { __typename?: 'Company', id: string, name: string, website: string, logo: { __typename?: 'CloudImageFieldOutput', url: string } | { __typename?: 'LocalImageFieldOutput', url: string } }, tags: Array<{ __typename?: 'Tag', name: string }> } };
 
 export type GetJobsQueryVariables = Exact<{
   endDate: InputMaybe<Scalars['DateTime']>;
@@ -889,7 +889,36 @@ export type GetJobsQueryVariables = Exact<{
 
 export type GetJobsQuery = { __typename?: 'Query', jobs: Array<{ __typename?: 'Job', id: string, title: string, url: string, startDate: any, endDate: any, content: { __typename?: 'Job_content_Document', document: any }, company: { __typename?: 'Company', id: string, name: string, website: string }, tags: Array<{ __typename?: 'Tag', id: string, name: string }> }> };
 
+export type GetLatestJobQueryVariables = Exact<{ [key: string]: never; }>;
 
+
+export type GetLatestJobQuery = { __typename?: 'Query', jobs: Array<{ __typename?: 'Job', title: string, url: string, startDate: any, endDate: any, html: string, content: { __typename?: 'Job_content_Document', document: any }, company: { __typename?: 'Company', id: string, name: string, website: string, logo: { __typename?: 'CloudImageFieldOutput', url: string } | { __typename?: 'LocalImageFieldOutput', url: string } }, tags: Array<{ __typename?: 'Tag', name: string }> }> };
+
+export type CardPropsFragment = { __typename?: 'Job', title: string, url: string, startDate: any, endDate: any, html: string, content: { __typename?: 'Job_content_Document', document: any }, company: { __typename?: 'Company', id: string, name: string, website: string, logo: { __typename?: 'CloudImageFieldOutput', url: string } | { __typename?: 'LocalImageFieldOutput', url: string } }, tags: Array<{ __typename?: 'Tag', name: string }> };
+
+export const CardPropsFragmentDoc = gql`
+    fragment CardProps on Job {
+  title
+  url
+  content {
+    document
+  }
+  startDate
+  endDate
+  html
+  company {
+    id
+    name
+    logo {
+      url
+    }
+    website
+  }
+  tags {
+    name
+  }
+}
+    `;
 export const GetJobDocument = gql`
     query GetJob($jobId: ID!) {
   job(where: {id: $jobId}) {
@@ -904,6 +933,9 @@ export const GetJobDocument = gql`
     company {
       id
       name
+      logo {
+        url
+      }
       website
     }
     tags {
@@ -935,6 +967,13 @@ export const GetJobsDocument = gql`
   }
 }
     `;
+export const GetLatestJobDocument = gql`
+    query GetLatestJob {
+  jobs(orderBy: {startDate: desc}, take: 1) {
+    ...CardProps
+  }
+}
+    ${CardPropsFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -948,6 +987,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     GetJobs(variables?: GetJobsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetJobsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetJobsQuery>(GetJobsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetJobs');
+    },
+    GetLatestJob(variables?: GetLatestJobQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetLatestJobQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetLatestJobQuery>(GetLatestJobDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetLatestJob');
     }
   };
 }

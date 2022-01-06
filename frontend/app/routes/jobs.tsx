@@ -1,10 +1,15 @@
 import dayjs from "dayjs";
 import { useState } from "react";
-import { Link, Outlet, useLoaderData } from "remix";
+import {
+  Form,
+  Link,
+  Outlet,
+  useLoaderData,
+  useSearchParams,
+  useSubmit,
+} from "remix";
 import { sdk } from "~/api";
 import { GetJobsQuery } from "~/api/cms.sdk";
-
-let data;
 
 export const loader = async ({ request }: any): Promise<GetJobsQuery> => {
   const url = new URL(request.url);
@@ -17,41 +22,54 @@ export const loader = async ({ request }: any): Promise<GetJobsQuery> => {
   return jobs;
 };
 
-export default function Index() {
+export default function Jobs() {
   const data = useLoaderData<GetJobsQuery>();
+  const [searchParams] = useSearchParams();
+  const submit = useSubmit();
+  const expired = searchParams.get("expired");
 
   return (
     <main className="flex gap-6 mt-6 place-content-center">
       <section className="job-list">
-        <form method="GET" id="job-filter">
+        <Form method="get" id="job-filter">
           <label>
             <input
               type="checkbox"
               name="expired"
               id="show-expired"
               className="mr-1"
+              onChange={(e) => submit(e.currentTarget.form)}
+              defaultChecked={expired === "on"}
             />
             Show expired jobs
           </label>
-        </form>
+        </Form>
 
         <ul className="flex flex-col gap-2">
           {data.jobs.map((job) => (
-            <li>
+            <li key={job.id}>
               <Link to={job.id}>
                 <div className="w-96 container bg-white rounded-md shadow-lg transform transition duration-300 hover:shadow-2xl p-2 flex flex-col">
                   <h1 className="text-1xl mt-2 ml-4 font-bold text-gray-800 cursor-pointer hover:text-gray-900 transition duration-100">
                     {job.title}
                   </h1>
-                  <span className="ml-4 mt-1 mb-1 text-gray-700 hover:underline cursor-pointer">
-                    {job.company?.name ?? ""}
-                  </span>
+
+                  {job.company && (
+                    <span className="ml-4 mb-1 text-gray-700 hover:underline cursor-pointer">
+                      {job.company?.name ?? ""}
+                    </span>
+                  )}
+
                   <span className="ml-4 mb-1">
                     Apply before: {dayjs(job.endDate).format("DD.MM.")}
                   </span>
-                  <div className="flex gap-2 ml-4">
+
+                  <div className="flex gap-1 ml-4">
                     {job.tags.map((tag) => (
-                      <span className="text-white text-xs font-bold rounded-lg bg-green-500 inline-block py-1.5 px-4 cursor-pointer">
+                      <span
+                        key={tag.id}
+                        className="text-white text-xs font-bold rounded-lg bg-green-500 inline-block py-1.5 px-4 cursor-pointer"
+                      >
                         {tag.name}
                       </span>
                     ))}
@@ -62,29 +80,9 @@ export default function Index() {
           ))}
         </ul>
       </section>
-
-      <section className="bg-white rounded-md shadow-lg p-4 w-[60rem]">
+      <div>
         <Outlet />
-      </section>
-
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-      document.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const expired = urlParams.get('expired');
-
-        if (expired === "on") {
-          document.getElementById('show-expired').checked = true;
-        }
-
-        document.getElementById('show-expired').onchange = (event) => {
-          document.getElementById('job-filter').submit()
-        }
-      });
-    `,
-        }}
-      />
+      </div>
     </main>
   );
 }

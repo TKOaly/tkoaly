@@ -1,0 +1,7 @@
+query GetLatestJob {
+  jobs(orderBy: { startDate: desc }, take: 1) {
+    ...CardProps
+  }
+}
+
+

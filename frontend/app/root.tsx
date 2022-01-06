@@ -37,7 +37,7 @@ export default function App() {
         </nav>
         <Outlet />
         <ScrollRestoration />
-        {includeScripts ? <Scripts /> : null}
+        <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
     </html>

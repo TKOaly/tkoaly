@@ -1,20 +1,27 @@
 query GetJob($jobId: ID!) {
   job(where: { id: $jobId }) {
-    title
-    url
-    content {
-      document
+    ...CardProps
+  }
+}
+
+fragment CardProps on Job {
+  title
+  url
+  content {
+    document
+  }
+  startDate
+  endDate
+  html
+  company {
+    id
+    name
+    logo {
+      url
     }
-    startDate
-    endDate
-    html
-    company {
-      id
-      name
-      website
-    }
-    tags {
-      name
-    }
+    website
+  }
+  tags {
+    name
   }
 }
