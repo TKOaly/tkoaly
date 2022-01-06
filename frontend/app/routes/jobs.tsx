@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { useState } from "react";
 import { Link, Outlet, useLoaderData } from "remix";
 import { sdk } from "~/api";
 import { GetJobsQuery } from "~/api/cms.sdk";
@@ -22,13 +23,18 @@ export default function Index() {
   return (
     <main className="flex gap-6 mt-6 place-content-center">
       <section className="job-list">
-        <form method="GET">
+        <form method="GET" id="job-filter">
           <label>
-            <input type="checkbox" name="expired" />
+            <input
+              type="checkbox"
+              name="expired"
+              id="show-expired"
+              className="mr-1"
+            />
             Show expired jobs
           </label>
-          <input type="submit" />
         </form>
+
         <ul className="flex flex-col gap-2">
           {data.jobs.map((job) => (
             <li>
@@ -60,6 +66,25 @@ export default function Index() {
       <section className="bg-white rounded-md shadow-lg p-4 w-[60rem]">
         <Outlet />
       </section>
+
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+      document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const expired = urlParams.get('expired');
+
+        if (expired === "on") {
+          document.getElementById('show-expired').checked = true;
+        }
+
+        document.getElementById('show-expired').onchange = (event) => {
+          document.getElementById('job-filter').submit()
+        }
+      });
+    `,
+        }}
+      />
     </main>
   );
 }
