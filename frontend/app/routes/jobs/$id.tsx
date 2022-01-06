@@ -10,6 +10,13 @@ export const loader = async ({ params }: any): Promise<GetJobQuery> => {
   return job;
 };
 
+export function headers() {
+  return {
+    "X-Stretchy-Pants": "its for fun",
+    "Cache-Control": "max-age=30000, s-maxage=360000",
+  };
+}
+
 export default function Index() {
   const { job } = useLoaderData<GetJobQuery>();
   return <JobDescriptionCard job={job} />;
