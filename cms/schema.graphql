@@ -6,13 +6,6 @@ type User {
   name: String
   email: String
   password: PasswordState
-  jobs(
-    where: JobWhereInput! = {}
-    orderBy: [JobOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Job!]
-  jobsCount(where: JobWhereInput! = {}): Int
 }
 
 type PasswordState {
@@ -31,7 +24,6 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
-  jobs: JobManyRelationFilter
 }
 
 input IDFilter {
@@ -79,12 +71,6 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
-input JobManyRelationFilter {
-  every: JobWhereInput
-  some: JobWhereInput
-  none: JobWhereInput
-}
-
 input UserOrderByInput {
   id: OrderDirection
   name: OrderDirection
@@ -100,14 +86,6 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
-  jobs: JobRelateToManyForUpdateInput
-}
-
-input JobRelateToManyForUpdateInput {
-  disconnect: [JobWhereUniqueInput!]
-  set: [JobWhereUniqueInput!]
-  create: [JobCreateInput!]
-  connect: [JobWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -119,12 +97,6 @@ input UserCreateInput {
   name: String
   email: String
   password: String
-  jobs: JobRelateToManyForCreateInput
-}
-
-input JobRelateToManyForCreateInput {
-  create: [JobCreateInput!]
-  connect: [JobWhereUniqueInput!]
 }
 
 type Job {
@@ -132,6 +104,7 @@ type Job {
   title: String
   status: String
   content: Job_content_Document
+  html: String
   startDate: DateTime
   endDate: DateTime
   author: User
@@ -164,6 +137,7 @@ input JobWhereInput {
   id: IDFilter
   title: StringFilter
   status: StringNullableFilter
+  html: StringFilter
   startDate: DateTimeFilter
   endDate: DateTimeNullableFilter
   author: UserWhereInput
@@ -233,6 +207,7 @@ input JobOrderByInput {
   id: OrderDirection
   title: OrderDirection
   status: OrderDirection
+  html: OrderDirection
   startDate: OrderDirection
   endDate: OrderDirection
   url: OrderDirection
@@ -242,6 +217,7 @@ input JobUpdateInput {
   title: String
   status: String
   content: JSON
+  html: String
   startDate: DateTime
   endDate: DateTime
   author: UserRelateToOneForUpdateInput
@@ -278,6 +254,7 @@ input JobCreateInput {
   title: String
   status: String
   content: JSON
+  html: String
   startDate: DateTime
   endDate: DateTime
   author: UserRelateToOneForCreateInput
@@ -443,6 +420,12 @@ input TagWhereInput {
   jobs: JobManyRelationFilter
 }
 
+input JobManyRelationFilter {
+  every: JobWhereInput
+  some: JobWhereInput
+  none: JobWhereInput
+}
+
 input TagOrderByInput {
   id: OrderDirection
   name: OrderDirection
@@ -453,6 +436,13 @@ input TagUpdateInput {
   jobs: JobRelateToManyForUpdateInput
 }
 
+input JobRelateToManyForUpdateInput {
+  disconnect: [JobWhereUniqueInput!]
+  set: [JobWhereUniqueInput!]
+  create: [JobCreateInput!]
+  connect: [JobWhereUniqueInput!]
+}
+
 input TagUpdateArgs {
   where: TagWhereUniqueInput!
   data: TagUpdateInput!
@@ -461,6 +451,11 @@ input TagUpdateArgs {
 input TagCreateInput {
   name: String
   jobs: JobRelateToManyForCreateInput
+}
+
+input JobRelateToManyForCreateInput {
+  create: [JobCreateInput!]
+  connect: [JobWhereUniqueInput!]
 }
 
 """

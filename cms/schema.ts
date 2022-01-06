@@ -52,11 +52,10 @@ export const lists: Lists = {
         isFilterable: true,
       }),
       password: password({ validation: { isRequired: true } }),
-      jobs: relationship({ ref: "Job.author", many: true }),
     },
     ui: {
       listView: {
-        initialColumns: ["name", "jobs"],
+        initialColumns: ["name"],
       },
     },
   }),
@@ -85,12 +84,13 @@ export const lists: Lists = {
         links: true,
         dividers: true,
       }),
+      html: text(),
       startDate: timestamp({
         validation: { isRequired: true },
       }),
       endDate: timestamp(),
       author: relationship({
-        ref: "User.jobs",
+        ref: "User",
         ui: {
           hideCreate: true,
         },
@@ -98,26 +98,10 @@ export const lists: Lists = {
       url: text(),
       tags: relationship({
         ref: "Tag.jobs",
-        ui: {
-          displayMode: "cards",
-          cardFields: ["name"],
-          inlineEdit: { fields: ["name"] },
-          linkToItem: true,
-          inlineConnect: true,
-          inlineCreate: { fields: ["name"] },
-        },
         many: true,
       }),
       company: relationship({
         ref: "Company.jobs",
-        ui: {
-          displayMode: "cards",
-          cardFields: ["name"],
-          inlineEdit: { fields: ["name"] },
-          linkToItem: true,
-          inlineConnect: true,
-          inlineCreate: { fields: ["name"] },
-        },
       }),
     },
   }),

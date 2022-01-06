@@ -12,11 +12,11 @@ generator client {
 }
 
 model User {
-  id       String @id @default(uuid()) @postgresql.Uuid
-  name     String @default("")
-  email    String @unique @default("")
-  password String
-  jobs     Job[]  @relation("Job_author")
+  id              String @id @default(uuid()) @postgresql.Uuid
+  name            String @default("")
+  email           String @unique @default("")
+  password        String
+  from_Job_author Job[]  @relation("Job_author")
 }
 
 model Job {
@@ -24,6 +24,7 @@ model Job {
   title     String    @default("")
   status    String?   @default("draft")
   content   Json      @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  html      String    @default("")
   startDate DateTime
   endDate   DateTime?
   author    User?     @relation("Job_author", fields: [authorId], references: [id])

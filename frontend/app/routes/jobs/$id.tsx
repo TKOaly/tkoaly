@@ -17,6 +17,7 @@ export const links = () => {
 
 export default function Index() {
   const data = useLoaderData<GetJobQuery>();
+  console.log("data: ", data);
 
   return (
     <div>
@@ -24,7 +25,11 @@ export default function Index() {
         <h2>{data.job.title}</h2>
         {data.job.company && <span>{data.job.company?.name}</span>}
       </header>
-      <DocumentRenderer document={data.job.content.document} />
+      {data.job.html ? (
+        <div dangerouslySetInnerHTML={{ __html: data.job.html }} />
+      ) : (
+        <DocumentRenderer document={data.job.content.document} />
+      )}
     </div>
   );
 }

@@ -170,6 +170,7 @@ export type Job = {
   company: Maybe<Company>;
   content: Maybe<Job_Content_Document>;
   endDate: Maybe<Scalars['DateTime']>;
+  html: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   startDate: Maybe<Scalars['DateTime']>;
   status: Maybe<Scalars['String']>;
@@ -197,6 +198,7 @@ export type JobCreateInput = {
   company: InputMaybe<CompanyRelateToOneForCreateInput>;
   content: InputMaybe<Scalars['JSON']>;
   endDate: InputMaybe<Scalars['DateTime']>;
+  html: InputMaybe<Scalars['String']>;
   startDate: InputMaybe<Scalars['DateTime']>;
   status: InputMaybe<Scalars['String']>;
   tags: InputMaybe<TagRelateToManyForCreateInput>;
@@ -212,6 +214,7 @@ export type JobManyRelationFilter = {
 
 export type JobOrderByInput = {
   endDate: InputMaybe<OrderDirection>;
+  html: InputMaybe<OrderDirection>;
   id: InputMaybe<OrderDirection>;
   startDate: InputMaybe<OrderDirection>;
   status: InputMaybe<OrderDirection>;
@@ -252,6 +255,7 @@ export type JobUpdateInput = {
   company: InputMaybe<CompanyRelateToOneForUpdateInput>;
   content: InputMaybe<Scalars['JSON']>;
   endDate: InputMaybe<Scalars['DateTime']>;
+  html: InputMaybe<Scalars['String']>;
   startDate: InputMaybe<Scalars['DateTime']>;
   status: InputMaybe<Scalars['String']>;
   tags: InputMaybe<TagRelateToManyForUpdateInput>;
@@ -266,6 +270,7 @@ export type JobWhereInput = {
   author: InputMaybe<UserWhereInput>;
   company: InputMaybe<CompanyWhereInput>;
   endDate: InputMaybe<DateTimeNullableFilter>;
+  html: InputMaybe<StringFilter>;
   id: InputMaybe<IdFilter>;
   startDate: InputMaybe<DateTimeFilter>;
   status: InputMaybe<StringNullableFilter>;
@@ -805,23 +810,8 @@ export type User = {
   __typename?: 'User';
   email: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  jobs: Maybe<Array<Job>>;
-  jobsCount: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
   password: Maybe<PasswordState>;
-};
-
-
-export type UserJobsArgs = {
-  orderBy?: Array<JobOrderByInput>;
-  skip?: Scalars['Int'];
-  take: InputMaybe<Scalars['Int']>;
-  where?: JobWhereInput;
-};
-
-
-export type UserJobsCountArgs = {
-  where?: JobWhereInput;
 };
 
 export type UserAuthenticationWithPasswordFailure = {
@@ -839,7 +829,6 @@ export type UserAuthenticationWithPasswordSuccess = {
 
 export type UserCreateInput = {
   email: InputMaybe<Scalars['String']>;
-  jobs: InputMaybe<JobRelateToManyForCreateInput>;
   name: InputMaybe<Scalars['String']>;
   password: InputMaybe<Scalars['String']>;
 };
@@ -868,7 +857,6 @@ export type UserUpdateArgs = {
 
 export type UserUpdateInput = {
   email: InputMaybe<Scalars['String']>;
-  jobs: InputMaybe<JobRelateToManyForUpdateInput>;
   name: InputMaybe<Scalars['String']>;
   password: InputMaybe<Scalars['String']>;
 };
@@ -879,7 +867,6 @@ export type UserWhereInput = {
   OR: InputMaybe<Array<UserWhereInput>>;
   email: InputMaybe<StringFilter>;
   id: InputMaybe<IdFilter>;
-  jobs: InputMaybe<JobManyRelationFilter>;
   name: InputMaybe<StringFilter>;
 };
 
@@ -893,7 +880,7 @@ export type GetJobQueryVariables = Exact<{
 }>;
 
 
-export type GetJobQuery = { __typename?: 'Query', job: { __typename?: 'Job', title: string, url: string, startDate: any, endDate: any, content: { __typename?: 'Job_content_Document', document: any }, company: { __typename?: 'Company', id: string, name: string, website: string }, tags: Array<{ __typename?: 'Tag', name: string }> } };
+export type GetJobQuery = { __typename?: 'Query', job: { __typename?: 'Job', title: string, url: string, startDate: any, endDate: any, html: string, content: { __typename?: 'Job_content_Document', document: any }, company: { __typename?: 'Company', id: string, name: string, website: string }, tags: Array<{ __typename?: 'Tag', name: string }> } };
 
 export type GetJobsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -911,6 +898,7 @@ export const GetJobDocument = gql`
     }
     startDate
     endDate
+    html
     company {
       id
       name

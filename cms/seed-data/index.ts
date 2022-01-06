@@ -16,7 +16,7 @@ interface Company {
 
 interface Job {
   title: string;
-  content: object;
+  html: string;
   startDate: Date | undefined | null;
   endDate: Date | undefined | null;
   url: string | null;
@@ -53,7 +53,8 @@ export async function insertSeedData(context: KeystoneContext) {
     url: job.url,
     startDate: job.begin ? dayjs(job.begin, "YYYY-MM-DD").toDate() : undefined,
     endDate: job.end ? dayjs(job.end, "YYYY-MM-DD").toDate() : undefined,
-    content: createDocumentObject(job.description ?? ""),
+    //content: createDocumentObject(job.description ?? ""),
+    html: job.description ?? "",
     tags: job.tags.map(({ name }) => name),
     company: job.company.name,
   }));
